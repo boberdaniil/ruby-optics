@@ -1,7 +1,6 @@
 require_relative 'utils/fn_or_block'
 require_relative 'utils/id_functor_delegator'
 require_relative 'utils/const'
-require_relative 'utils/validations'
 require_relative 'kernel/applicative'
 
 class Traversal

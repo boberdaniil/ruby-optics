@@ -9,7 +9,7 @@ class Const
     self
   end
 
-  def zip(another)
-    Const.new([get_const, another.get_const])
+  def ==(another)
+    self.get_const == another.get_const
   end
 end

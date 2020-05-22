@@ -1,7 +1,14 @@
+require_relative 'applicative'
+require_relative 'functor/array'
+
 module Functor
   # TODO: make registry thread safe
 
   FunctorInstanceNotFound = Class.new(StandardError)
+
+  def self.has_functor_instance?(object)
+    !instance_for(object.class).nil?
+  end
 
   def self.instance_for(klass)
     instance = @_registry[klass]
@@ -26,7 +33,7 @@ module Functor
   private
 
   def self.functor_instance_from_applicative(klass)
-    applicative_instance = Applicatie.instance_for(klass)
+    applicative_instance = Applicative.instance_for(klass)
 
     c = Class.new do
       def map(obj, fn = nil, &blk)

@@ -1,7 +1,7 @@
 require_relative 'nullable'
 require_relative 'traversal'
 require_relative 'utils/fn_or_block'
-require_relative 'utils/validations'
+require_relative 'kernel/functor'
 
 class Lens
   include FnOrBlock
@@ -35,7 +35,7 @@ class Lens
     functor_modify_fn = retrieve_function_from_arg_or_block(fn, blk)
 
     functor_result = functor_modify_fn.(get(object))
-    Validations.check_functor(functor_result)
+    Functor.has_functor_instance?(functor_result)
 
     functor_result.map { |a| set(a, object) }
   end
