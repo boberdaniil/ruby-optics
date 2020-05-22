@@ -8,7 +8,6 @@ module Optics
     head, *tail = keys
 
     [build_hash_lens(head), *tail].reduce { |result_lens, key|
-      puts "composed lens #{key}"
       result_lens.compose_lens(build_hash_lens(key))
     }
   end

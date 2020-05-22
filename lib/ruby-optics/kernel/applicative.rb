@@ -13,6 +13,7 @@ module Applicative
         "Can not found applicative instance for #{klass}"
       )
     end
+    return instance
   end
 
   def self.register_instance(klass, instance)
