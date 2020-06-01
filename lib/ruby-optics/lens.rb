@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'nullable'
 require_relative 'utils/fn_or_block'
 

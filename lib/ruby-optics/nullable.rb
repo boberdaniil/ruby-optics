@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NullableOptic
   def nullable
     self.class.new(
