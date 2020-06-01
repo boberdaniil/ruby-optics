@@ -1,7 +1,5 @@
 require_relative 'lens'
 require_relative 'nullable'
-require_relative 'optional_lens'
-require_relative 'traversal'
 
 module Optics
   def self.hash_lens(*keys)

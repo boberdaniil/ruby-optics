@@ -1,7 +1,5 @@
 require_relative 'nullable'
-require_relative 'traversal'
 require_relative 'utils/fn_or_block'
-require_relative 'kernel/functor'
 
 class Lens
   include FnOrBlock
@@ -31,15 +29,6 @@ class Lens
     )
   end
 
-  def modify_f(object, fn = nil, &blk)
-    functor_modify_fn = retrieve_function_from_arg_or_block(fn, blk)
-
-    functor_result = functor_modify_fn.(get(object))
-    Functor.has_functor_instance?(functor_result)
-
-    functor_result.map { |a| set(a, object) }
-  end
-
   def compose_lens(other_lense)
     Lens.new(
       -> (obj) { other_lense.getter.(getter.(obj)) },
@@ -53,17 +42,5 @@ class Lens
         )
       }
     )
-  end
-
-  def compose_traversal(other_traversal)
-    self
-      .as_traversal
-      .compose_traversal(other_traversal)
-  end
-
-  def to_traversal
-    Traversal.new { |obj, fn|
-      self.modify_f(obj, fn)
-    }
   end
 end

@@ -44,12 +44,4 @@ RSpec.describe Lens do
       expect(composed_lens.modify({ foo: { bar: 2 } }) { |i| i + 3 }).to eq({ foo: { bar: 5 } })
     end
   end
-
-  describe '#modify_f' do
-    it 'wraps object functor' do
-      lens = hash_foo_lens
-
-      expect(lens.modify_f({ foo: 1 }) { |a| [a] }).to eq([{ foo: 1 }])
-    end
-  end
 end
