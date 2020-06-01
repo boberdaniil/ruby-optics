@@ -2,8 +2,6 @@
 
 source 'https://rubygems.org'
 
-eval_gemfile 'Gemfile.devtools'
-
 gemspec
 
 group :tools do
