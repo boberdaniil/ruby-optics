@@ -5,7 +5,11 @@ class Each
   attr_reader :outer_focus
   attr_reader :filter
 
-  Filter = Struct.new(:focus, :blk)
+  Filter = Struct.new(:focus, :blk) do
+    def call(object)
+      blk.(focus.get(object))
+    end
+  end
 
   def initialize(outer_focus = nil, inner_focus = nil, filter = nil)
     @outer_focus = outer_focus || Lens.identity
@@ -19,7 +23,13 @@ class Each
 
   def modify_all(object, &blk)
     outer_focus.modify(object) { |enumerable|
-      filtered(enumerable).map { |a| inner_focus.modify(a, &blk) }
+      enumerable.map { |a|
+        if !filter.nil?
+          filter.call(a) ? inner_focus.modify(a, &blk) : a
+        else
+          inner_focus.modify(a, &blk)
+        end
+      }
     }
   end
 
@@ -27,11 +37,11 @@ class Each
     filtered(outer_focus.get(object)).map { |a| inner_focus.get(a) }
   end
 
-  def with_filter(filtering_focus, &blk)
+  def with_filter(focusing_lens, &blk)
     Each.new(
       outer_focus = self.outer_focus,
       inner_focus = self.inner_focus,
-      filter      = Filter.new(filtering_focus, blk)
+      filter      = Filter.new(focusing_lens, blk)
     )
   end
 
@@ -43,11 +53,15 @@ class Each
     )
   end
 
+  def self.with_filter(focusing_lens, &blk)
+    Each.new.with_filter(focusing_lens, &blk)
+  end
+
   private
   
   def filtered(enumerable)
     return enumerable if filter.nil? 
 
-    enumerable.select { |element| filter.blk.(filter.focus.get(element)) }
+    enumerable.select { |object| filter.call(object) }
   end
 end
