@@ -46,4 +46,26 @@ RSpec.describe Lens do
       expect(composed_lens.modify({ foo: { bar: 2 } }) { |i| i + 3 }).to eq({ foo: { bar: 5 } })
     end
   end
+
+  context 'identity lens' do
+    let(:lens) { Lens.identity }
+
+    describe '#get' do
+      it 'returns passed value' do
+        expect(lens.get(10)).to eq(10)
+      end
+    end
+
+    describe '#set' do
+      it 'returns new value' do
+        expect(lens.set(20, 10)).to eq(20)
+      end
+    end
+
+    describe '#modify' do
+      it 'applies block to passed value' do
+        expect(lens.modify(10) { |i| i + 5 }).to eq(15)
+      end
+    end
+  end
 end

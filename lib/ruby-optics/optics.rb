@@ -2,6 +2,7 @@
 
 require_relative 'lens'
 require_relative 'nullable'
+require_relative 'each'
 
 module Optics
   def self.hash_lens(*keys)

@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'nullable'
-require_relative 'utils/fn_or_block'
 
 class Lens
-  include FnOrBlock
-
   attr_reader :getter
   attr_reader :setter
 
@@ -43,6 +40,17 @@ class Lens
           obj
         )
       }
+    )
+  end
+
+  def each_lens
+    Each.new(outer_focus = self)
+  end
+
+  def self.identity
+    @_identity ||= Lens.new(
+      -> (obj) { obj },
+      -> (new_val, _obj) { new_val }
     )
   end
 end
