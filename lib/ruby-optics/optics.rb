@@ -13,6 +13,15 @@ module Optics
     }
   end
 
+  def self.indiffirent_access_hash_lens(*keys)
+    head, *tail = keys
+    opts = { indiffirent_access: true }
+
+    [build_hash_lens(head, opts), *tail].reduce { |result_lens, key|
+      result_lens.compose_lens(build_hash_lens(key, opts))
+    }
+  end
+
   def self.struct_lens(*method_names)
     head, *tail = method_names
 
@@ -23,9 +32,24 @@ module Optics
 
   private
 
-  def self.build_hash_lens(key)
+  def self.build_hash_lens(key, indiffirent_access: false)
     ::Lens.new(
-      -> (hash) { hash[key] },
+      -> (hash) {
+        if indiffirent_access
+          case key
+          when String
+            val = hash[key]
+            val.nil? ? hash[key.to_sym] : val
+          when Symbol
+            val = hash[key]
+            val.nil? ? hash[key.to_s] : val
+          else
+            hash[key]
+          end
+        else
+          hash[key]
+        end
+      },
       -> (new_value, hash) { hash.merge(key => new_value) }
     ).nullable
   end

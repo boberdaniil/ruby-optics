@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Lens do
   let(:hash_foo_lens) do
-    lens = Lens.new(
+    Lens.new(
       -> (a) { a[:foo] },
       -> (a, s) { s.merge(foo: a) }
     )
