@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["cardinal.ximinez.again@gmail.com"]
   spec.license       = 'MIT'
   spec.version       = Optics::VERSION.dup
-
+  spec.homepage      = "https://github.com/boberdaniil/ruby-optics"
   spec.summary       = "Common optics for Ruby"
   spec.description   = spec.summary
   spec.files         = Dir["LICENSE", "README.md", "ruby-optics.gemspec", "lib/**/*"]
