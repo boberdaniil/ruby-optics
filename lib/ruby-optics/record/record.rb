@@ -63,7 +63,7 @@ module Record
         default:        default
       }
 
-      base.attr_reader(attribute_name)
+      base.send(:attr_reader, attribute_name)
     end
 
     base.instance_variable_set(:"@_lenses", {})

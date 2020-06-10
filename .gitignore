@@ -36,5 +36,5 @@ config/secrets.yml
 !.vscode/extensions.json
 *.code-workspace
 
-
+.ruby-version
 .history/
