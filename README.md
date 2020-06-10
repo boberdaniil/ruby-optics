@@ -6,7 +6,7 @@ Simple library with common functional optics for Ruby.
 
 This library officially supports the following Ruby versions:
 
-* MRI = `2.5.0`
+* MRI >= `2.3.0`
 
 ## Installation
 
