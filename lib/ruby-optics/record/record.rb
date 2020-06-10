@@ -12,10 +12,11 @@ module Record
       attribute_name = defined_attribute_params[:attribute_name]
       attribute_argument = args_hash[attribute_name]
       if attribute_argument.nil?
-        if defined_attribute_params[:nullable]
+        default_value = defined_attribute_params[:default]
+        if defined_attribute_params[:nullable] || default_value
           instance_variable_set(
             :"@#{attribute_name}",
-            defined_attribute_params[:default]
+            default_value
           )
         else
           raise ArgumentError.new(

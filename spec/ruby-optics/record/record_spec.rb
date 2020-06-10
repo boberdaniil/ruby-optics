@@ -34,10 +34,11 @@ RSpec.describe Record do
         attribute :attr1
         attribute :attr2, nullable: true
         attribute :attr3, nullable: true, default: 3
+        attribute :attr4, default: 5
       end
 
       it 'allows to pass nil to nullable to attributes' do
-        expect { C2.new(attr1: 1 ) }.not_to raise_error
+        expect { C2.new(attr1: 1) }.not_to raise_error
         expect(C2.new(attr1: 1).attr1).to eq(1)
       end
 
@@ -45,6 +46,7 @@ RSpec.describe Record do
         expect(C2.new(attr1: 1).attr1).to eq(1)
         expect(C2.new(attr1: 1).attr2).to be_nil
         expect(C2.new(attr1: 1).attr3).to eq(3)
+        expect(C2.new(attr1: 1).attr4).to eq(5)
       end
     end
   end
