@@ -17,7 +17,6 @@ jobs:
           - "2.6"
           - "2.5"
           - "2.4"
-          - "jruby"
 
     env:
       CLASSPATH: ""
