@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Record do
   describe 'constructor and readers' do
-    class C1
+    class self::C1
       include Record
   
       attribute :attr1
@@ -13,22 +13,22 @@ RSpec.describe Record do
     end
 
     it 'initializes from hash' do
-      object = C1.new(attr1: 1, attr2: 2, attr3: 3)
+      object = self.class::C1.new(attr1: 1, attr2: 2, attr3: 3)
       expect(object.attr1).to eq(1)
       expect(object.attr2).to eq(2)
       expect(object.attr3).to eq(3)
     end
 
     it 'raises error if some attribute key is missing' do
-      expect { C1.new(attr1: 1, attr2: 2) }.to raise_error(ArgumentError)
+      expect { self.class::C1.new(attr1: 1, attr2: 2) }.to raise_error(ArgumentError)
     end
 
     it 'raises error if some attribute is nil' do
-      expect { C1.new(attr1: 1, attr2: 2, attr3: nil) }.to raise_error(ArgumentError)
+      expect { self.class::C1.new(attr1: 1, attr2: 2, attr3: nil) }.to raise_error(ArgumentError)
     end
 
     context 'nullables and defaults' do
-      class C2
+      class self::C2
         include Record
     
         attribute :attr1
@@ -38,21 +38,21 @@ RSpec.describe Record do
       end
 
       it 'allows to pass nil to nullable to attributes' do
-        expect { C2.new(attr1: 1) }.not_to raise_error
-        expect(C2.new(attr1: 1).attr1).to eq(1)
+        expect { self.class::C2.new(attr1: 1) }.not_to raise_error
+        expect(self.class::C2.new(attr1: 1).attr1).to eq(1)
       end
 
       it 'provides specified defaults' do
-        expect(C2.new(attr1: 1).attr1).to eq(1)
-        expect(C2.new(attr1: 1).attr2).to be_nil
-        expect(C2.new(attr1: 1).attr3).to eq(3)
-        expect(C2.new(attr1: 1).attr4).to eq(5)
+        expect(self.class::C2.new(attr1: 1).attr1).to eq(1)
+        expect(self.class::C2.new(attr1: 1).attr2).to be_nil
+        expect(self.class::C2.new(attr1: 1).attr3).to eq(3)
+        expect(self.class::C2.new(attr1: 1).attr4).to eq(5)
       end
     end
   end
 
   describe '#== #eql? #hash' do
-    class C3
+    class self::C3
       include Record
 
       attribute :attr1
@@ -60,7 +60,7 @@ RSpec.describe Record do
       attribute :attr3
     end
 
-    class C4
+    class self::C4
       include Record
 
       attribute :attr1
@@ -68,7 +68,7 @@ RSpec.describe Record do
       attribute :attr3
     end
 
-    class C5
+    class self::C5
       include Record
 
       attribute :attr1
@@ -77,36 +77,36 @@ RSpec.describe Record do
     end
 
     it 'calculates same hash with records of same type with same attributes' do
-      object1 = C3.new(attr1: 1, attr2: 2, attr3: 3)
-      object2 = C3.new(attr1: 1, attr2: 2, attr3: 3)
+      object1 = self.class::C3.new(attr1: 1, attr2: 2, attr3: 3)
+      object2 = self.class::C3.new(attr1: 1, attr2: 2, attr3: 3)
       expect(object1.hash).to eq(object2.hash)
     end
 
     it 'calculates different hash for objects with same args but different classes' do
-      object1 = C3.new(attr1: 1, attr2: 2, attr3: 3)
-      object2 = C4.new(attr1: 1, attr2: 2, attr3: 3)
+      object1 = self.class::C3.new(attr1: 1, attr2: 2, attr3: 3)
+      object2 = self.class::C4.new(attr1: 1, attr2: 2, attr3: 3)
       expect(object1.hash).not_to eq(object2.hash)
     end
 
     it 'checks equality of two records' do
-      object1 = C3.new(attr1: 1, attr2: 2, attr3: 3)
-      object2 = C4.new(attr1: 1, attr2: 2, attr3: 3)
-      object3 = C5.new(attr1: 1, attr2: 2, param3: 3)
+      object1 = self.class::C3.new(attr1: 1, attr2: 2, attr3: 3)
+      object2 = self.class::C4.new(attr1: 1, attr2: 2, attr3: 3)
+      object3 = self.class::C5.new(attr1: 1, attr2: 2, param3: 3)
 
       expect(object1).to eq(object1)
-      expect(object1).to eq(C3.new(attr1: 1, attr2: 2, attr3: 3))
+      expect(object1).to eq(self.class::C3.new(attr1: 1, attr2: 2, attr3: 3))
       expect(object1).not_to eq(object2)
       expect(object1).not_to eq(object3)
     end
 
     it 'checks deep equality' do
-      object1 = C3.new(
-        attr1: C3.new(attr1: 1, attr2: 2, attr3: 3),
-        attr2: C4.new(attr1: 1, attr2: 2, attr3: 3),
-        attr3: C5.new(
+      object1 = self.class::C3.new(
+        attr1: self.class::C3.new(attr1: 1, attr2: 2, attr3: 3),
+        attr2: self.class::C4.new(attr1: 1, attr2: 2, attr3: 3),
+        attr3: self.class::C5.new(
           attr1: 1,
           attr2: 2,
-          param3: C3.new(
+          param3: self.class::C3.new(
             attr1: 11,
             attr2: 12,
             attr3: 13
@@ -114,13 +114,13 @@ RSpec.describe Record do
         )
       )
 
-      object2 = C3.new(
-        attr1: C3.new(attr1: 1, attr2: 2, attr3: 3),
-        attr2: C4.new(attr1: 1, attr2: 2, attr3: 3),
-        attr3: C5.new(
+      object2 = self.class::C3.new(
+        attr1: self.class::C3.new(attr1: 1, attr2: 2, attr3: 3),
+        attr2: self.class::C4.new(attr1: 1, attr2: 2, attr3: 3),
+        attr3: self.class::C5.new(
           attr1: 1,
           attr2: 2,
-          param3: C3.new(
+          param3: self.class::C3.new(
             attr1: 11,
             attr2: 12,
             attr3: 13
@@ -133,7 +133,7 @@ RSpec.describe Record do
   end
 
   describe '#copy_with' do
-    class C6
+    class self::C6
       include Record
 
       attribute :attr1
@@ -142,7 +142,7 @@ RSpec.describe Record do
     end
 
     it 'creates new object with updated params' do
-      original_object = C6.new(attr1: 1, attr2: 2, attr3: 3)
+      original_object = self.class::C6.new(attr1: 1, attr2: 2, attr3: 3)
       updated_object = original_object.copy_with(attr2: 12, attr3: 13)
 
       expect(original_object.attr1).to eq(1)
@@ -156,7 +156,7 @@ RSpec.describe Record do
   end
 
   describe 'lenses' do
-    class C7
+    class self::C7
       include Record
 
       attribute :attr1
@@ -164,7 +164,7 @@ RSpec.describe Record do
       attribute :attr3
     end
 
-    class C8
+    class self::C8
       include Record
 
       attribute :attr1
@@ -172,28 +172,28 @@ RSpec.describe Record do
     end
 
     it 'creates correct lenses for attributes' do
-      object = C4.new(attr1: 1, attr2: 2, attr3: 3)
-      expect(C4.lens(:attr1).get(object)).to eq(1)
-      expect(C4.lens(:attr2).get(object)).to eq(2)
-      expect(C4.lens(:attr2).get(object)).to eq(2)
+      object = self.class::C7.new(attr1: 1, attr2: 2, attr3: 3)
+      expect(self.class::C7.lens(:attr1).get(object)).to eq(1)
+      expect(self.class::C7.lens(:attr2).get(object)).to eq(2)
+      expect(self.class::C7.lens(:attr2).get(object)).to eq(2)
     end
 
     it 'creates nested lenses' do
-      c7 = C7.new(
+      c7 = self.class::C7.new(
         attr1: 1,
         attr2: 2,
         attr3: 3
       )
 
-      object = C8.new(
+      object = self.class::C8.new(
         attr1: 1,
         attr2: c7
       )
 
-      expect(C8.lens(:attr2, :attr1).set(5, object)).to eq(
-        C8.new(
+      expect(self.class::C8.lens(:attr2, :attr1).set(5, object)).to eq(
+        self.class::C8.new(
           attr1: 1,
-          attr2: C7.new(
+          attr2: self.class::C7.new(
             attr1: 5,
             attr2: 2,
             attr3: 3
