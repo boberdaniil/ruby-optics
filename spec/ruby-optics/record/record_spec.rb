@@ -203,29 +203,4 @@ RSpec.describe Record do
       expect(c7.attr1).to eq(1)
     end
   end
-
-  if RUBY_VERSION.to_f >= 2.7
-    describe 'pattern matching' do
-      class C9
-        include Record
-
-        attribute :foo
-        attribute :bar
-        attribute :baz
-      end
-
-      it 'correctly deconstructs keys' do
-        case C9.new(foo: 1, bar: 2, baz: 3)
-        in C9(foo: foo, bar: bar, baz: baz)
-          result = [foo, bar, baz]
-        in C9(foo: foo, bar: bar, baz: baz, snafu: snafu)
-          result = [foo, bar, baz, snafu]
-        else
-          result = []
-        end
-
-        expect(result).to eq([1, 2, 3])
-      end
-    end
-  end
 end

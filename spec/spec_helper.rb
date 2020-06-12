@@ -17,6 +17,10 @@ $VERBOSE = true
 require 'ruby-optics'
 
 RSpec.configure do |config|
+  unless RUBY_VERSION >= '2.7'
+    config.exclude_pattern = "**/pattern_matching_spec.rb"
+  end
+
   config.disable_monkey_patching!
   config.filter_run_when_matching :focus
 end
