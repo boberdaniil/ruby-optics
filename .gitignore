@@ -38,3 +38,5 @@ config/secrets.yml
 
 .ruby-version
 .history/
+
+Gemfile.lock
