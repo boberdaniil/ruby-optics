@@ -54,6 +54,12 @@ module Record
     [self.class, _current_attributes].hash
   end
 
+  if RUBY_VERSION.to_f >= 2.7
+    def deconstruct_keys(keys)
+      _current_attributes
+    end
+  end
+
   def self.included(base)
     base.define_singleton_method(:attribute) do |attribute_name, nullable: false, default: nil|
       @_record_attributes_defs ||= []
