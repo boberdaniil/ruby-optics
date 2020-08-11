@@ -7,7 +7,9 @@ module Record
     defined_attributes = self.class.instance_variable_get(
       :"@_record_attributes_defs"
     ) || []
-    
+
+    missing_attributes = []
+
     defined_attributes.each do |defined_attribute_params|
       attribute_name = defined_attribute_params[:attribute_name]
       attribute_argument = args_hash[attribute_name]
@@ -19,9 +21,7 @@ module Record
             default_value
           )
         else
-          raise ArgumentError.new(
-            "Attribute with name #{attribute_name} is not provided"
-          )
+          missing_attributes << attribute_name
         end
       else
         instance_variable_set(
@@ -29,6 +29,14 @@ module Record
           attribute_argument
         )
       end
+    end
+
+    missing_attributes.uniq!
+    if missing_attributes.any?
+      missing_attributes_str = missing_attributes.map { |a| "'#{a}'"}.join(', ')
+      error_message = "Missing #{missing_attributes.length == 1 ? 'attribute' : 'attributes' } #{missing_attributes_str}"
+
+      raise ArgumentError.new(error_message)
     end
   end
 

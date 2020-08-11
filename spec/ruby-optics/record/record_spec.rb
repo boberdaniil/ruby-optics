@@ -20,11 +20,19 @@ RSpec.describe Record do
     end
 
     it 'raises error if some attribute key is missing' do
-      expect { self.class::C1.new(attr1: 1, attr2: 2) }.to raise_error(ArgumentError)
+      expect { self.class::C1.new(attr1: 1) }.to raise_error(
+        ArgumentError, "Missing attributes 'attr2', 'attr3'"
+      )
+
+      expect { self.class::C1.new(attr1: 1, attr2: 2) }.to raise_error(
+        ArgumentError, "Missing attribute 'attr3'"
+      )
     end
 
     it 'raises error if some attribute is nil' do
-      expect { self.class::C1.new(attr1: 1, attr2: 2, attr3: nil) }.to raise_error(ArgumentError)
+      expect { self.class::C1.new(attr1: 1, attr2: 2, attr3: nil) }.to raise_error(
+        ArgumentError
+      )
     end
 
     context 'nullables and defaults' do
